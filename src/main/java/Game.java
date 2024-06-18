@@ -8,7 +8,7 @@ public class Game {
     String playerWeapon;
     int choice;
     int monsterHP;
-    String silverRing;
+    int silverRing;
 
     public static void main(String[] args) {
         Game game;
@@ -47,14 +47,22 @@ public class Game {
         choice = scanner.nextInt();
 
         if (choice == 1){
-            System.out.println("Guard: Hello there stranger. So your name is " + playerName + "? \nSorry but we cannot let stranger enter our town.");
-            enterScanner.nextLine();
-            townGate();
+            if (silverRing == 1) {
+                ending();
+            }
+            else {
+                System.out.println("Guard: Hello there stranger. So your name is " + playerName + "? \nSorry but we cannot let stranger enter our town.");
+                enterScanner.nextLine();
+                townGate();
+            }
         }
-        if (choice == 2) {
+        else if (choice == 2) {
             playerHP = playerHP-1;
             System.out.println("Guard: Hey don't be stupid.\nThe guard hit you so hard and you gave up.\n(You receive 1 damage)");
             System.out.println("Your HP: " + playerHP);
+            if (playerHP < 1) {
+                dead();
+            }
             enterScanner.nextLine();
             townGate();
         }
@@ -101,6 +109,9 @@ public class Game {
 
         if (playerHP < 10) {
             playerHP += 1;
+        }
+        else {
+            System.out.println("Your HP is full.");
         }
 
         System.out.println("Your HP: " + playerHP);
@@ -186,7 +197,7 @@ public class Game {
             playerDamage = new java.util.Random().nextInt(8);
         }
 
-        System.out.println("You attack the monster and gave " + playerDamage + " damage!");
+        System.out.println("You attacked the monster and gave " + playerDamage + " damage!");
 
         monsterHP = monsterHP - playerDamage;
 
@@ -196,7 +207,7 @@ public class Game {
             win();
         }
         if (monsterHP > 0) {
-            int monsterDamage;
+            int monsterDamage = 0;
 
             monsterDamage = new java.util.Random().nextInt(4);
 
@@ -209,7 +220,7 @@ public class Game {
             if (playerHP < 1) {
                 dead();
             }
-            if (playerHP > 0) {
+            else {
                 fight();
             }
         }
@@ -220,6 +231,7 @@ public class Game {
         System.out.println("You are dead!!!");
         System.out.println("\n\nGAME OVER");
         System.out.println("**************************************************************");
+        System.exit(0);
     }
 
     public void win() {
@@ -230,7 +242,7 @@ public class Game {
         System.out.println("1: Go east");
         System.out.println("**************************************************************");
 
-        silverRing = "yes";
+        silverRing = 1;
 
         choice = scanner.nextInt();
 
@@ -240,6 +252,15 @@ public class Game {
         else {
             win();
         }
-
     }
+
+    public void ending() {
+        System.out.println("**************************************************************");
+        System.out.println("Guard: Oh you killed that goblin?? Great!");
+        System.out.println("Guard: It seems you are trustworthy. Welcome to our town!");
+        System.out.println("\n\n        THE END            ");
+        System.out.println("**************************************************************");
+        System.exit(0);
+    }
+
 }
